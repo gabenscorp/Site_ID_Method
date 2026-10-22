@@ -1,0 +1,4982 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scoring Methodology — Rail-Site Suitability</title>
+  <style>
+    :root {
+      --paper: #f1ede3;
+      --paper2: #e7e1d3;
+      --card: #faf8f2;
+      --rule: #d2c9b6;
+      --rule2: #c0b59e;
+      --ink: #23211c;
+      --ink2: #5c564a;
+      --ink3: #8a8371;
+      --rail: #1f3a3d;
+      --rail2: #2d5457;
+      --clear: #1f8f4e;
+      --caution: #d99a16;
+      --stop: #c5402f;
+      --d-t: #3b7dd8;
+      --d-e: #2a9d8f;
+      --d-en: #c25d1a;
+      --d-s: #9b5de5;
+      --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      --sans: "Helvetica Neue", Arial, system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.55;
+      font-feature-settings: "tnum" 1;
+      -webkit-font-smoothing: antialiased
+    }
+
+    .wrap {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px 80px
+    }
+
+    /* hero */
+    .hero {
+      background: var(--rail);
+      color: #f1ede3;
+      margin: 0 -24px 0;
+      padding: 46px 24px 40px;
+      border-bottom: 4px solid var(--caution)
+    }
+
+    .hero .in {
+      max-width: 1012px;
+      margin: 0 auto
+    }
+
+    .hero .eyebrow {
+      font-size: 25px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #9fb8b4;
+      margin-bottom: 14px
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      font-weight: 750;
+      letter-spacing: -.5px;
+      line-height: 1.08;
+    }
+
+    .hero p {
+      margin-top: 16px;
+      font-size: 20px;
+      color: #cdd9d6;
+    }
+
+    .hero .meta {
+      margin-top: 22px;
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      font-size: 18px;
+      color: #9fb8b4
+    }
+
+    .hero .meta b {
+      color: #f1ede3;
+      font-weight: 600
+    }
+
+    /* section scaffold */
+    section {
+      margin-top: 46px
+    }
+
+    .snum {
+      font-size: 25px;
+      letter-spacing: 1px;
+      color: var(--ink3);
+      font-variant-numeric: tabular-nums
+    }
+
+    h2 {
+      font-size: 25px;
+      font-weight: 700;
+      letter-spacing: -.3px;
+      margin: 4px 0 6px
+    }
+
+    .lead {
+      font-size: 16px;
+      color: var(--ink2);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 22px;
+      margin-top: 18px
+    }
+
+    /* the big pipeline diagram */
+    .pipe {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin-top: 22px;
+      flex-wrap: wrap
+    }
+
+    .pstep {
+      flex: 1;
+      min-width: 150px;
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 16px 15px;
+      position: relative
+    }
+
+    .pstep .pn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--rail);
+      color: #f1ede3;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 9px
+    }
+
+    .pstep h3 {
+      font-size: 18px;
+      font-weight: 650;
+      margin-bottom: 5px
+    }
+
+    .pstep p {
+      font-size: 15px;
+      color: var(--ink2);
+      line-height: 1.5
+    }
+
+    .parrow {
+      align-self: center;
+      color: var(--rule2);
+      font-size: 22px;
+      padding: 0 6px;
+      flex: none
+    }
+
+    @media(max-width:760px) {
+      .parrow {
+        display: none
+      }
+
+      .pstep {
+        min-width: 100%;
+        margin-bottom: 10px
+      }
+    }
+
+    /* scale strip */
+    .scale {
+      display: flex;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 16px
+    }
+
+    .scale .s {
+      flex: 1;
+      padding: 12px 10px;
+      text-align: center;
+      color: #fff
+    }
+
+    .scale .s .n {
+      font-size: 20px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums
+    }
+
+    .scale .s .d {
+      font-size: 15px;
+      opacity: .95;
+      margin-top: 2px
+    }
+
+    /* weight bars */
+    .wblock {
+      margin-top: 8px
+    }
+
+    .wrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 9px 0
+    }
+
+    .wrow .wl {
+      width: 150px;
+      flex: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 600
+    }
+
+    .wrow .wl .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      flex: none
+    }
+
+    .wrow .track {
+      flex: 1;
+      height: 26px;
+      background: var(--paper2);
+      border-radius: 7px;
+      overflow: hidden;
+      position: relative
+    }
+
+    .wrow .track>i {
+      display: block;
+      height: 100%;
+      border-radius: 7px;
+      transition: width .5s
+    }
+
+    .wrow .wv {
+      width: 50px;
+      text-align: right;
+      font-weight: 700;
+      font-size: 15px;
+      font-variant-numeric: tabular-nums
+    }
+
+    /* domain cards grid */
+    .dgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px
+    }
+
+    @media(max-width:720px) {
+      .dgrid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .dcard {
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--card)
+    }
+
+    .dcard .dh {
+      padding: 13px 16px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center
+    }
+
+    .dcard .dh .dt {
+      font-weight: 700;
+      font-size: 15px
+    }
+
+    .dcard .dh .dw {
+      font-size: 12px;
+      background: rgba(255, 255, 255, .22);
+      padding: 2px 9px;
+      border-radius: 12px;
+      font-weight: 600
+    }
+
+    .dcard .db {
+      padding: 6px 16px 14px
+    }
+
+    .crit {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-top: 1px solid var(--rule);
+      font-size: 18px
+    }
+
+    .crit:first-child {
+      border-top: 0
+    }
+
+    .crit .cn {
+      flex: 1
+    }
+
+    .crit .cbar {
+      width: 90px;
+      height: 7px;
+      background: var(--paper2);
+      border-radius: 4px;
+      overflow: hidden;
+      flex: none
+    }
+
+    .crit .cbar>i {
+      display: block;
+      height: 100%;
+      border-radius: 4px
+    }
+
+    .crit .cw {
+      width: 38px;
+      text-align: right;
+      font-size: 12px;
+      color: var(--ink2);
+      font-variant-numeric: tabular-nums;
+      font-weight: 600
+    }
+
+    /* formula */
+    .formula {
+      background: var(--rail);
+      color: #f1ede3;
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-top: 18px;
+      text-align: center
+    }
+
+    .formula .eq {
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: .2px
+    }
+
+    .formula .eq .op {
+      color: #9fb8b4;
+      margin: 0 6px
+    }
+
+    .formula .note {
+      margin-top: 12px;
+      font-size: 15px;
+      color: #cdd9d6
+    }
+
+    /* worked example */
+    .work {
+      margin-top: 18px;
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      overflow: hidden
+    }
+
+    .work table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 16px
+    }
+
+    .work th,
+    .work td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--rule)
+    }
+
+    .work th {
+      background: var(--paper2);
+      font-size: 12px;
+      color: var(--ink2);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .4px
+    }
+
+    .work td.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums
+    }
+
+    .work tr:last-child td {
+      border-bottom: 0
+    }
+
+    .work .total td {
+      background: var(--rail);
+      color: #f1ede3;
+      font-weight: 700
+    }
+
+    .work .total td .p {
+      font-size: 17px
+    }
+
+    .ladder {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      font-size: 16px;
+      color: var(--ink2)
+    }
+
+    .ladder .chip {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 8px 13px;
+      font-weight: 600;
+      color: var(--ink)
+    }
+
+    .ladder .chip b {
+      font-variant-numeric: tabular-nums
+    }
+
+    .ladder .ar {
+      color: var(--rule2);
+      font-size: 18px
+    }
+
+    .gate {
+      margin-top: 18px;
+      border: 1px solid var(--stop);
+      border-radius: 12px;
+      overflow: hidden
+    }
+
+    .gate .gh {
+      background: #c5402f12;
+      padding: 13px 18px;
+      font-weight: 700;
+      color: var(--stop);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-bottom: 1px solid #c5402f44
+    }
+
+    .gate .gb {
+      padding: 14px 18px;
+      font-size: 14px;
+      color: var(--ink2);
+      line-height: 1.6
+    }
+
+    .gate .gb b {
+      color: var(--ink)
+    }
+
+    .foot {
+      margin-top: 50px;
+      padding-top: 22px;
+      border-top: 1px solid var(--rule);
+      font-size: 15px;
+      color: var(--ink3);
+      line-height: 1.6
+    }
+
+    .foot b {
+      color: var(--ink2)
+    }
+
+    .tocbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(241, 237, 227, .92);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--rule);
+      margin: 0 -24px 0;
+      padding: 11px 24px;
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap
+    }
+
+    .tocbar a {
+      font-size: 16px;
+      color: var(--ink2);
+      text-decoration: none;
+      padding: 5px 11px;
+      border-radius: 7px
+    }
+
+    .tocbar a:hover {
+      background: var(--paper2);
+      color: var(--ink)
+    }
+
+    .inlinechip {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      vertical-align: middle
+    }
+  </style>
+</head>
+
+<body>
+  <div class="hero">
+    <div class="in">
+      <div class="eyebrow">Site Identification tool · Scoring Methodology</div>
+      <h1>How a parcel becomes a suitability score</h1>
+      <p>Every candidate site is scored on fourteen criteria, grouped into four domains, and combined
+        into a single composite suitability score from 0 to 100%. This page shows exactly how —
+        from raw measurement to final percentage — so the result can be read, questioned, and trusted.</p>
+      <div class="meta">
+        <span><b>14</b> criteria</span>
+        <span><b>4</b> weighted domains</span>
+        <span><b>1–5</b> ordinal scoring</span>
+        <span><b>0–100%</b> composite scale</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="tocbar">
+      <a href="#flow">The four steps</a>
+      <a href="#score">1 · Scoring criteria</a>
+      <a href="#domains">2 · Domains &amp; weights</a>
+      <a href="#composite">3 · The composite</a>
+      <a href="#percent">4 · To a percentage</a>
+      <a href="#example">Worked example</a>
+      <a href="#constraints">Social scoring</a>
+    </div>
+
+    <!-- OVERVIEW FLOW -->
+    <section id="flow">
+      <div class="snum">OVERVIEW</div>
+      <h2>Four steps, raw data to score</h2>
+      <p class="lead">The method is a two-level weighted average. Criteria are weighted within their domain;
+        domains are weighted into the composite. Nothing is a black box — every number traces back to a measurement.</p>
+      <div class="pipe">
+        <div class="pstep"><span class="pn">1</span>
+          <h3>Score each criterion</h3>
+          <p>Each of the 14 criteria is scored <b>1–5</b> against defined thresholds. 5 = best, 1 = worst.</p>
+        </div>
+        <div class="parrow">→</div>
+        <div class="pstep"><span class="pn">2</span>
+          <h3>Weight into domains</h3>
+          <p>Criteria combine by a <b>weighted average</b> within each domain, giving a 1–5 domain score.</p>
+        </div>
+        <div class="parrow">→</div>
+        <div class="pstep"><span class="pn">3</span>
+          <h3>Weight into composite</h3>
+          <p>The four domain scores combine by a <b>second weighted average</b> into one 1–5 composite.</p>
+        </div>
+        <div class="parrow">→</div>
+        <div class="pstep"><span class="pn">4</span>
+          <h3>Rescale to %</h3>
+          <p>The 1–5 composite is rescaled to an intuitive <b>0–100%</b> suitability score.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 1: SCORING -->
+    <section id="score">
+      <div class="snum">STEP 1</div>
+      <h2>Scoring each criterion 1–5</h2>
+      <p class="lead">Every criterion is converted from its raw measurement to a 1–5 score against thresholds set
+        for that criterion. The direction depends on the criterion: for access factors closer is better;
+        for constraints like floodplain or slope, less is better.</p>
+      <div class="scale">
+        <div class="s" style="background:#1f8f4e">
+          <div class="n">5</div>
+          <div class="d">Excellent</div>
+        </div>
+        <div class="s" style="background:#5bb06a">
+          <div class="n">4</div>
+          <div class="d">Good</div>
+        </div>
+        <div class="s" style="background:#d99a16">
+          <div class="n">3</div>
+          <div class="d">Moderate</div>
+        </div>
+        <div class="s" style="background:#e07b1a">
+          <div class="n">2</div>
+          <div class="d">Poor</div>
+        </div>
+        <div class="s" style="background:#c5402f">
+          <div class="n">1</div>
+          <div class="d">Very poor</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div style="font-size:18px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">
+          Example thresholds</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 26px;font-size:16px">
+          <div><b>Distance to major road</b> <span style="color:var(--ink3)">(closer better)</span><br>
+            <span style="color:var(--ink2)"> ≤ 0.6 mi → 5 · ≤ 3.1 mi → 4 · ≤ 6.2 mi → 3 · ≤ 12.4 mi → 2 · &gt; 12.4 mi →
+              1</span>
+          </div>
+          <div><b>Floodplain coverage</b> <span style="color:var(--ink3)">(less better)</span><br>
+            <span style="color:var(--ink2)">0% → 5 · ≤8% → 4 · ≤18% → 3 · ≤30% → 2 · &gt;30% → 1</span>
+          </div>
+          <div><b>Mean slope</b> <span style="color:var(--ink3)">(lower better)</span><br>
+            <span style="color:var(--ink2)">≤2% → 5 · ≤5% → 4 · ≤8% → 3 · ≤12% → 2 · &gt;12% → 1</span>
+          </div>
+          <div><b>Distance to transmission</b> <span style="color:var(--ink3)">(closer better)</span><br>
+            <span style="color:var(--ink2)">≤0.5 mi → 5 · ≤1.5 mi → 4 · ≤3 mi → 3 · ≤5 mi → 2 · &gt;5 mi → 1</span>
+          </div>
+        </div>
+        <div style="font-size:15px;color:var(--ink3);margin-top:12px">Thresholds are configurable and set per criterion;
+          the values above are representative.</div>
+      </div>
+    </section>
+
+    <!-- STEP 2: DOMAINS -->
+    <section id="domains">
+      <div class="snum">STEP 2</div>
+      <h2>Grouping criteria into four weighted domains</h2>
+      <p class="lead">The 14 criteria belong to four domains. Within each domain, criteria carry their own
+        weights (shown as bars) and combine by a weighted average into a single 1–5 domain score.</p>
+      <div class="dgrid" id="dgrid"></div>
+    </section>
+
+    <!-- STEP 3: COMPOSITE -->
+    <section id="composite">
+      <div class="snum">STEP 3</div>
+      <h2>Combining domains into the composite</h2>
+      <p class="lead">The four domain scores are combined by a second weighted average. These domain weights
+        express the organisation's siting priorities — they are the main lever for what "suitable" means.</p>
+      <div class="wblock card" id="domweights"></div>
+      <div class="formula">
+        <div class="eq">Composite<span class="op">=</span>Σ (domain weight <span class="op">×</span> domain score)<span
+            class="op">÷</span>Σ domain weights</div>
+        <div class="note">A weighted <b>average</b> (divided by the total weight) — so the composite always stays on the
+          same 1–5 scale, whatever the weights.</div>
+      </div>
+    </section>
+
+    <!-- STEP 4: PERCENT -->
+    <section id="percent">
+      <div class="snum">STEP 4</div>
+      <h2>Rescaling to a 0–100% score</h2>
+      <p class="lead">The 1–5 composite is rescaled to a percentage so it reads intuitively. A composite of 1
+        (worst possible) maps to 0%; a composite of 5 (best possible) maps to 100%.</p>
+      <div class="formula">
+        <div class="eq">Score %<span class="op">=</span>( Composite − 1 )<span class="op">÷</span>4<span
+            class="op">×</span>100</div>
+      </div>
+      <div class="ladder">
+        <div class="chip">Composite <b>5.0</b></div><span class="ar">→</span>
+        <span class="inlinechip" style="background:#1f8f4e">100%</span>
+        <span style="width:16px"></span>
+        <div class="chip"><b>4.5</b></div><span class="ar">→</span><span class="inlinechip"
+          style="background:#1f8f4e">90%</span>
+        <div class="chip"><b>4.0</b></div><span class="ar">→</span><span class="inlinechip" style="background:#f1c40f">
+          80%</span>
+        <div class="chip"><b>3.95</b></div><span class="ar">→</span><span class="inlinechip"
+          style="background:#e67e22">79%</span>
+        <div class="chip"><b>3.0</b></div><span class="ar">→</span><span class="inlinechip" style="background:#c5402f">
+          &lt 60%</span>
+      </div>
+      <div class="scale" style="margin-top:20px">
+        <div class="s" style="background:#1f8f4e;flex:2.5">
+          <div class="n">90–100%</div>
+          <div class="d">Excellent — advance to due diligence</div>
+        </div>
+        <div class="s" , style="background: #f1c40f;flex:2.5;">
+          <div class="n">80-89%</div>
+          <div class="d"> Very Good - viable with few trade-offs</div>
+        </div>
+        <div class="s" style="background:#e67e22;flex:2.5">
+          <div class="n">60–79%</div>
+          <div class="d">Good — viable with trade-offs</div>
+        </div>
+        <div class="s" style="background:#c5402f;flex:2">
+          <div class="n">&lt;60%</div>
+          <div class="d">Marginal — likely not competitive</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKED EXAMPLE -->
+    <section id="example">
+      <div class="snum">WORKED EXAMPLE</div>
+      <h2>One site, start to finish</h2>
+      <p class="lead">A sample site's four domain scores flowing through the domain weighting to a final percentage.</p>
+      <div class="work">
+        <table id="worktable"></table>
+      </div>
+      <div class="ladder" style="margin-top:16px" id="workladder"></div>
+    </section>
+
+    <!-- SOCIAL SCORING DETAIL -->
+    <section id="constraints">
+      <div class="snum">A CLOSER LOOK</div>
+      <h2>How the Social domain is scored</h2>
+      <p class="lead">Social factors are a <b>fully scored domain</b> — weighted into the composite like the
+        others, not a pass/fail gate. Each of its four criteria is scored 1–5, but the direction differs
+        by facility: some are amenities a site should be near, one is best kept at a distance, and one is a
+        simple yes/no.</p>
+      <div class="dgrid" style="margin-top:18px">
+        <div class="card" style="margin:0">
+          <div style="font-size:16px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">
+            Closer is better · amenity</div>
+          <div style="font-weight:700;font-size:15px;margin-bottom:6px">Schools &amp; Technical schools</div>
+          <p style="font-size:16px;color:var(--ink2)">Scored on <b>distance to the nearest</b> facility — proximity is
+            desirable,
+            so a shorter distance scores higher (near → 5, far → 1).</p>
+        </div>
+        <div class="card" style="margin:0">
+          <div style="font-size:16px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">
+            Farther is better · avoid</div>
+          <div style="font-weight:700;font-size:15px;margin-bottom:6px">Hospitals</div>
+          <p style="font-size:16px;color:var(--ink2)">Scored on <b>distance to the nearest</b> hospital — a buffer is
+            preferred,
+            so a greater distance scores higher (far → 5, near → 1).</p>
+        </div>
+        <div class="card" style="margin:0">
+          <div style="font-size:16px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">
+            Binary · presence</div>
+          <div style="font-weight:700;font-size:15px;margin-bottom:6px">Cemeteries</div>
+          <p style="font-size:16px;color:var(--ink2)">A simple presence test: a cemetery on the parcel scores
+            <b>1</b>;
+            no cemetery scores <b>5</b>. There is no in-between.
+          </p>
+        </div>
+        <div class="card" style="margin:0">
+          <div style="font-size:16px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">
+            Combined</div>
+          <div style="font-weight:700;font-size:15px;margin-bottom:6px">Social domain score</div>
+          <p style="font-size:16px;color:var(--ink2)">The four criterion scores combine by weighted average into the
+            Social domain's 1–5 score — which is then weighted into the composite alongside the other three domains.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="foot" id="foot"></div>
+  </div>
+
+  <script>
+    const DATA = {
+      "region": "Georgia \u2014 Rail-Served Site Candidates",
+      "generated": "2026-10-21",
+      "domains": {
+        "transportation": {
+          "weight": 0.25,
+          "label": "Transportation",
+          "color": "#3b7dd8",
+          "criteria": {
+            "major_road": {
+              "w": 0.75,
+              "label": "Major road (>4 lanes)",
+              "dir": "near"
+            },
+            "minor_road": {
+              "w": 0.25,
+              "label": "Minor road (<4 lanes)",
+              "dir": "near"
+            }
+          }
+        },
+        "environmental": {
+          "weight": 0.20,
+          "label": "Environmental",
+          "color": "#2a9d8f",
+          "criteria": {
+            "floodway": {
+              "w": 0.25,
+              "label": "Floodway",
+              "dir": "cov"
+            },
+            "floodplain_100": {
+              "w": 0.15,
+              "label": "Floodplain 100yr",
+              "dir": "cov"
+            },
+            "floodplain_500": {
+              "w": 0.05,
+              "label": "Floodplain 500yr",
+              "dir": "cov"
+            },
+            "slope": {
+              "w": 0.25,
+              "label": "Slope",
+              "dir": "low"
+            },
+            "wetland and waterbody": {
+              "w": 0.3,
+              "label": "Wet_water bodies",
+              "dir": "cov"
+            }
+          }
+        },
+        "energy": {
+          "weight": 0.50,
+          "label": "Energy",
+          "color": "#c25d1a",
+          "criteria": {
+            "transmission": {
+              "w": 0.7,
+              "label": "Transmission lines",
+              "dir": "near"
+            },
+            "natural_gas": {
+              "w": 0.3,
+              "label": "Natural gas",
+              "dir": "near"
+            }
+          }
+        },
+        "social": {
+          "weight": 0.05,
+          "label": "Social",
+          "color": "#9b5de5",
+          "criteria": {
+            "hospital": {
+              "w": 0.3,
+              "label": "Hospitals",
+              "dir": "far"
+            },
+            "school": {
+              "w": 0.2,
+              "label": "Schools",
+              "dir": "near"
+            },
+            "technical_school": {
+              "w": 0.4,
+              "label": "Technical schools",
+              "dir": "near"
+            },
+            "cemetery": {
+              "w": 0.1,
+              "label": "Cemeteries",
+              "dir": "binary"
+            }
+          }
+        }
+      },
+      "sites": [
+        {
+          "id": "GA-6017",
+          "name": "Blackshear Mill",
+          "loc": "Pierce, GA",
+          "lat": 32.465,
+          "lon": -84.544,
+          "acreage": 320,
+          "domains": {
+            "transportation": 5.0,
+            "environmental": 3.95,
+            "energy": 3.8,
+            "social": 4.55
+          },
+          "composite": 4.33,
+          "pct": 83,
+          "crit": {
+            "major_road": {
+              "s": 5,
+              "m": "0.6 mi"
+            },
+            "minor_road": {
+              "s": 5,
+              "m": "0.4 mi"
+            },
+            "floodway": {
+              "s": 4,
+              "m": "4%"
+            },
+            "floodplain_100": {
+              "s": 4,
+              "m": "5%"
+            },
+            "floodplain_500": {
+              "s": 5,
+              "m": "4%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "7.1%"
+            },
+            "wetland": {
+              "s": 5,
+              "m": "2%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "12%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "natural_gas": {
+              "s": 5,
+              "m": "0.2 mi"
+            },
+            "hospital": {
+              "s": 5,
+              "m": "5.4 mi"
+            },
+            "school": {
+              "s": 4,
+              "m": "1.4 mi"
+            },
+            "technical_school": {
+              "s": 4,
+              "m": "1.0 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -84.54989470154301,
+                  32.46022829644872
+                ],
+                [
+                  -84.53779567449187,
+                  32.46048970694666
+                ],
+                [
+                  -84.53823113836056,
+                  32.470062535048754
+                ],
+                [
+                  -84.55072460198764,
+                  32.47028808477787
+                ],
+                [
+                  -84.5500574054687,
+                  32.45988924884978
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5000",
+          "name": "Brogdon Crossing",
+          "loc": "Peach, GA",
+          "lat": 32.58,
+          "lon": -83.73,
+          "acreage": 640,
+          "domains": {
+            "transportation": 4.6,
+            "environmental": 4.05,
+            "energy": 3.8,
+            "social": 4.75
+          },
+          "composite": 4.3,
+          "pct": 82,
+          "crit": {
+            "major_road": {
+              "s": 5,
+              "m": "0.0 mi"
+            },
+            "minor_road": {
+              "s": 4,
+              "m": "1.3 mi"
+            },
+            "floodway": {
+              "s": 4,
+              "m": "2%"
+            },
+            "floodplain_100": {
+              "s": 5,
+              "m": "0%"
+            },
+            "floodplain_500": {
+              "s": 4,
+              "m": "6%"
+            },
+            "slope": {
+              "s": 4,
+              "m": "3.8%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "16%"
+            },
+            "water_body": {
+              "s": 4,
+              "m": "2%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "1.7 mi"
+            },
+            "natural_gas": {
+              "s": 5,
+              "m": "0.0 mi"
+            },
+            "hospital": {
+              "s": 5,
+              "m": "5.8 mi"
+            },
+            "school": {
+              "s": 4,
+              "m": "1.4 mi"
+            },
+            "technical_school": {
+              "s": 5,
+              "m": "0.4 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.73886445711051,
+                  32.57359624482225
+                ],
+                [
+                  -83.72188568588095,
+                  32.57325243792315
+                ],
+                [
+                  -83.72093576876294,
+                  32.58753420473121
+                ],
+                [
+                  -83.73938477003468,
+                  32.5865111784981
+                ],
+                [
+                  -83.73857743526926,
+                  32.57277230640943
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6008",
+          "name": "Toccoa Highlands",
+          "loc": "Stephens, GA",
+          "lat": 31.286,
+          "lon": -81.71,
+          "acreage": 420,
+          "domains": {
+            "transportation": 5.0,
+            "environmental": 3.6,
+            "energy": 3.4,
+            "social": 4.8
+          },
+          "composite": 4.2,
+          "pct": 80,
+          "crit": {
+            "major_road": {
+              "s": 5,
+              "m": "0.3 mi"
+            },
+            "minor_road": {
+              "s": 5,
+              "m": "0.4 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "17%"
+            },
+            "floodplain_100": {
+              "s": 5,
+              "m": "0%"
+            },
+            "floodplain_500": {
+              "s": 4,
+              "m": "8%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "6.5%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "12%"
+            },
+            "water_body": {
+              "s": 4,
+              "m": "4%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "natural_gas": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "hospital": {
+              "s": 5,
+              "m": "6.3 mi"
+            },
+            "school": {
+              "s": 5,
+              "m": "0.1 mi"
+            },
+            "technical_school": {
+              "s": 4,
+              "m": "1.4 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -81.7160943201811,
+                  31.279752845047305
+                ],
+                [
+                  -81.70352607235536,
+                  31.28066545650673
+                ],
+                [
+                  -81.70327644919013,
+                  31.29243322966827
+                ],
+                [
+                  -81.71737589881059,
+                  31.291515892537213
+                ],
+                [
+                  -81.71685139088842,
+                  31.280144898999
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5002",
+          "name": "Macon Junction",
+          "loc": "Laurens, GA",
+          "lat": 32.56,
+          "lon": -82.94,
+          "acreage": 340,
+          "domains": {
+            "transportation": 3.8,
+            "environmental": 3.85,
+            "energy": 5.0,
+            "social": 4.0
+          },
+          "composite": 4.16,
+          "pct": 79,
+          "crit": {
+            "major_road": {
+              "s": 3,
+              "m": "2.2 mi"
+            },
+            "minor_road": {
+              "s": 5,
+              "m": "0.3 mi"
+            },
+            "floodway": {
+              "s": 4,
+              "m": "7%"
+            },
+            "floodplain_100": {
+              "s": 4,
+              "m": "2%"
+            },
+            "floodplain_500": {
+              "s": 3,
+              "m": "14%"
+            },
+            "slope": {
+              "s": 4,
+              "m": "3.8%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "17%"
+            },
+            "water_body": {
+              "s": 5,
+              "m": "1%"
+            },
+            "transmission": {
+              "s": 5,
+              "m": "0.5 mi"
+            },
+            "natural_gas": {
+              "s": 5,
+              "m": "0.2 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "4.6 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "2.9 mi"
+            },
+            "technical_school": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -82.94613330730245,
+                  32.55532644978118
+                ],
+                [
+                  -82.93417163957456,
+                  32.554725187443886
+                ],
+                [
+                  -82.93445981253076,
+                  32.56488727310881
+                ],
+                [
+                  -82.946475274902,
+                  32.56532486256724
+                ],
+                [
+                  -82.94625043268083,
+                  32.55473195829534
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6019",
+          "name": "Glennville Site",
+          "loc": "Tattnall, GA",
+          "lat": 31.298,
+          "lon": -83.423,
+          "acreage": 320,
+          "domains": {
+            "transportation": 3.6,
+            "environmental": 3.4,
+            "energy": 5.0,
+            "social": 4.3
+          },
+          "composite": 4.08,
+          "pct": 77,
+          "crit": {
+            "major_road": {
+              "s": 4,
+              "m": "1.3 mi"
+            },
+            "minor_road": {
+              "s": 3,
+              "m": "2.2 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "15%"
+            },
+            "floodplain_100": {
+              "s": 4,
+              "m": "9%"
+            },
+            "floodplain_500": {
+              "s": 5,
+              "m": "4%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "6.1%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "13%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "16%"
+            },
+            "transmission": {
+              "s": 5,
+              "m": "0.2 mi"
+            },
+            "natural_gas": {
+              "s": 5,
+              "m": "0.4 mi"
+            },
+            "hospital": {
+              "s": 5,
+              "m": "6.0 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "1.7 mi"
+            },
+            "technical_school": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.42880907479095,
+                  31.29255962737539
+                ],
+                [
+                  -83.41729346187148,
+                  31.292516446644907
+                ],
+                [
+                  -83.417610614198,
+                  31.30336251470991
+                ],
+                [
+                  -83.4285443533182,
+                  31.30316168984723
+                ],
+                [
+                  -83.42898114561778,
+                  31.29288924884977
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6011",
+          "name": "Metter Crossing",
+          "loc": "Candler, GA",
+          "lat": 31.9,
+          "lon": -84.679,
+          "acreage": 420,
+          "domains": {
+            "transportation": 4.6,
+            "environmental": 3.5,
+            "energy": 3.6,
+            "social": 4.45
+          },
+          "composite": 4.04,
+          "pct": 76,
+          "crit": {
+            "major_road": {
+              "s": 5,
+              "m": "0.3 mi"
+            },
+            "minor_road": {
+              "s": 4,
+              "m": "1.0 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "14%"
+            },
+            "floodplain_100": {
+              "s": 5,
+              "m": "0%"
+            },
+            "floodplain_500": {
+              "s": 4,
+              "m": "4%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "7.1%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "16%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "12%"
+            },
+            "transmission": {
+              "s": 4,
+              "m": "1.2 mi"
+            },
+            "natural_gas": {
+              "s": 3,
+              "m": "2.6 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "4.8 mi"
+            },
+            "school": {
+              "s": 4,
+              "m": "0.8 mi"
+            },
+            "technical_school": {
+              "s": 5,
+              "m": "0.2 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -84.68626772190078,
+                  31.8939436435566
+                ],
+                [
+                  -84.67285842777845,
+                  31.893673742005348
+                ],
+                [
+                  -84.67145455650218,
+                  31.90603403118867
+                ],
+                [
+                  -84.68628377137146,
+                  31.90629383858962
+                ],
+                [
+                  -84.68589669760054,
+                  31.894144898999
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5003",
+          "name": "Dublin Logistics Park",
+          "loc": "Crisp, GA",
+          "lat": 32.54,
+          "lon": -82.9,
+          "acreage": 520,
+          "domains": {
+            "transportation": 3.6,
+            "environmental": 3.85,
+            "energy": 4.0,
+            "social": 4.35
+          },
+          "composite": 3.95,
+          "pct": 74,
+          "crit": {
+            "major_road": {
+              "s": 4,
+              "m": "1.2 mi"
+            },
+            "minor_road": {
+              "s": 3,
+              "m": "2.8 mi"
+            },
+            "floodway": {
+              "s": 4,
+              "m": "8%"
+            },
+            "floodplain_100": {
+              "s": 3,
+              "m": "11%"
+            },
+            "floodplain_500": {
+              "s": 3,
+              "m": "15%"
+            },
+            "slope": {
+              "s": 4,
+              "m": "3.5%"
+            },
+            "wetland": {
+              "s": 5,
+              "m": "0%"
+            },
+            "water_body": {
+              "s": 4,
+              "m": "5%"
+            },
+            "transmission": {
+              "s": 4,
+              "m": "1.2 mi"
+            },
+            "natural_gas": {
+              "s": 4,
+              "m": "0.8 mi"
+            },
+            "hospital": {
+              "s": 5,
+              "m": "5.4 mi"
+            },
+            "school": {
+              "s": 4,
+              "m": "0.6 mi"
+            },
+            "technical_school": {
+              "s": 3,
+              "m": "2.0 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -82.90857616845435,
+                  32.533740544041926
+                ],
+                [
+                  -82.89302720728126,
+                  32.53411561495292
+                ],
+                [
+                  -82.8916273329681,
+                  32.54667713986246
+                ],
+                [
+                  -82.90829779778063,
+                  32.54687416109945
+                ],
+                [
+                  -82.9077281497886,
+                  32.53348504503897
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6002",
+          "name": "Sylvania Depot",
+          "loc": "Screven, GA",
+          "lat": 31.98,
+          "lon": -81.508,
+          "acreage": 120,
+          "domains": {
+            "transportation": 4.0,
+            "environmental": 3.95,
+            "energy": 4.0,
+            "social": 3.8
+          },
+          "composite": 3.94,
+          "pct": 73,
+          "crit": {
+            "major_road": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "minor_road": {
+              "s": 4,
+              "m": "1.0 mi"
+            },
+            "floodway": {
+              "s": 4,
+              "m": "9%"
+            },
+            "floodplain_100": {
+              "s": 3,
+              "m": "15%"
+            },
+            "floodplain_500": {
+              "s": 5,
+              "m": "2%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "6.6%"
+            },
+            "wetland": {
+              "s": 5,
+              "m": "0%"
+            },
+            "water_body": {
+              "s": 5,
+              "m": "3%"
+            },
+            "transmission": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "natural_gas": {
+              "s": 4,
+              "m": "1.3 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "3.8 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "3.0 mi"
+            },
+            "technical_school": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -81.5113758909526,
+                  31.976844334769623
+                ],
+                [
+                  -81.50421310913386,
+                  31.97700656198069
+                ],
+                [
+                  -81.50464198308248,
+                  31.983399488317474
+                ],
+                [
+                  -81.51208833072448,
+                  31.983246082152633
+                ],
+                [
+                  -81.51168965019264,
+                  31.976870316869903
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6018",
+          "name": "Folkston Gateway",
+          "loc": "Charlton, GA",
+          "lat": 32.416,
+          "lon": -83.978,
+          "acreage": 420,
+          "domains": {
+            "transportation": 3.8,
+            "environmental": 3.65,
+            "energy": 4.6,
+            "social": 3.6
+          },
+          "composite": 3.91,
+          "pct": 73,
+          "crit": {
+            "major_road": {
+              "s": 3,
+              "m": "2.6 mi"
+            },
+            "minor_road": {
+              "s": 5,
+              "m": "0.3 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "15%"
+            },
+            "floodplain_100": {
+              "s": 5,
+              "m": "4%"
+            },
+            "floodplain_500": {
+              "s": 4,
+              "m": "6%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "6.6%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "7%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "14%"
+            },
+            "transmission": {
+              "s": 5,
+              "m": "0.3 mi"
+            },
+            "natural_gas": {
+              "s": 4,
+              "m": "0.9 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "3.5 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "2.8 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "3.4 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.98536943970471,
+                  32.41043306432833
+                ],
+                [
+                  -83.970311861239,
+                  32.41015085050383
+                ],
+                [
+                  -83.97158464178071,
+                  32.42146630937381
+                ],
+                [
+                  -83.98479774464417,
+                  32.42208737649174
+                ],
+                [
+                  -83.98493585853596,
+                  32.410144898999
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6003",
+          "name": "Jesup Transload",
+          "loc": "Wayne, GA",
+          "lat": 32.353,
+          "lon": -81.752,
+          "acreage": 980,
+          "domains": {
+            "transportation": 4.6,
+            "environmental": 3.45,
+            "energy": 4.0,
+            "social": 3.05
+          },
+          "composite": 3.77,
+          "pct": 69,
+          "crit": {
+            "major_road": {
+              "s": 5,
+              "m": "0.5 mi"
+            },
+            "minor_road": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "15%"
+            },
+            "floodplain_100": {
+              "s": 4,
+              "m": "4%"
+            },
+            "floodplain_500": {
+              "s": 3,
+              "m": "13%"
+            },
+            "slope": {
+              "s": 4,
+              "m": "3.4%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "4%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "25%"
+            },
+            "transmission": {
+              "s": 4,
+              "m": "1.3 mi"
+            },
+            "natural_gas": {
+              "s": 4,
+              "m": "0.9 mi"
+            },
+            "hospital": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "4.4 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "4.0 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -81.7625374977678,
+                  32.34446004740774
+                ],
+                [
+                  -81.74231696855233,
+                  32.34352025655115
+                ],
+                [
+                  -81.74080196540315,
+                  32.361897926183644
+                ],
+                [
+                  -81.76307532055351,
+                  32.36197887681076
+                ],
+                [
+                  -81.76258731292675,
+                  32.344056185487105
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5001",
+          "name": "Peachtree Industrial",
+          "loc": "Bibb, GA",
+          "lat": 32.84,
+          "lon": -83.63,
+          "acreage": 410,
+          "domains": {
+            "transportation": 4.4,
+            "environmental": 4.2,
+            "energy": 3.0,
+            "social": 2.8
+          },
+          "composite": 3.6,
+          "pct": 65,
+          "crit": {
+            "major_road": {
+              "s": 4,
+              "m": "0.7 mi"
+            },
+            "minor_road": {
+              "s": 5,
+              "m": "0.2 mi"
+            },
+            "floodway": {
+              "s": 5,
+              "m": "1%"
+            },
+            "floodplain_100": {
+              "s": 4,
+              "m": "7%"
+            },
+            "floodplain_500": {
+              "s": 4,
+              "m": "5%"
+            },
+            "slope": {
+              "s": 5,
+              "m": "1.8%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "18%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "11%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "1.7 mi"
+            },
+            "natural_gas": {
+              "s": 3,
+              "m": "1.7 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "4.7 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "2.6 mi"
+            },
+            "technical_school": {
+              "s": 3,
+              "m": "2.8 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.63642336880481,
+                  32.834091086505204
+                ],
+                [
+                  -83.6226033370077,
+                  32.834900196956006
+                ],
+                [
+                  -83.6226093044531,
+                  32.84606007316742
+                ],
+                [
+                  -83.63662135231326,
+                  32.84530664709916
+                ],
+                [
+                  -83.63688533521174,
+                  32.8342150224987
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5004",
+          "name": "Cordele Gateway",
+          "loc": "Houston, GA",
+          "lat": 31.96,
+          "lon": -83.78,
+          "acreage": 410,
+          "domains": {
+            "transportation": 3.6,
+            "environmental": 3.0,
+            "energy": 4.0,
+            "social": 3.6
+          },
+          "composite": 3.55,
+          "pct": 64,
+          "crit": {
+            "major_road": {
+              "s": 4,
+              "m": "0.6 mi"
+            },
+            "minor_road": {
+              "s": 3,
+              "m": "2.7 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "23%"
+            },
+            "floodplain_100": {
+              "s": 4,
+              "m": "4%"
+            },
+            "floodplain_500": {
+              "s": 3,
+              "m": "11%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "7.0%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "2%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "19%"
+            },
+            "transmission": {
+              "s": 4,
+              "m": "1.4 mi"
+            },
+            "natural_gas": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "3.7 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "2.5 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "3.1 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.78687783317702,
+                  31.953558151126657
+                ],
+                [
+                  -83.77338022492867,
+                  31.954142769567234
+                ],
+                [
+                  -83.7726423975984,
+                  31.965949529685524
+                ],
+                [
+                  -83.7874104634423,
+                  31.96589237280211
+                ],
+                [
+                  -83.78681854766461,
+                  31.95421502249869
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6016",
+          "name": "Douglas Logistics",
+          "loc": "Coffee, GA",
+          "lat": 34.188,
+          "lon": -83.225,
+          "acreage": 980,
+          "domains": {
+            "transportation": 3.0,
+            "environmental": 3.75,
+            "energy": 4.0,
+            "social": 3.35
+          },
+          "composite": 3.52,
+          "pct": 63,
+          "crit": {
+            "major_road": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "minor_road": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "13%"
+            },
+            "floodplain_100": {
+              "s": 4,
+              "m": "8%"
+            },
+            "floodplain_500": {
+              "s": 3,
+              "m": "12%"
+            },
+            "slope": {
+              "s": 5,
+              "m": "1.4%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "8%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "14%"
+            },
+            "transmission": {
+              "s": 4,
+              "m": "0.9 mi"
+            },
+            "natural_gas": {
+              "s": 4,
+              "m": "1.3 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "4.7 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "3.5 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "3.1 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.23563529885526,
+                  34.179459696018036
+                ],
+                [
+                  -83.21337213734635,
+                  34.178051529555034
+                ],
+                [
+                  -83.21515508774324,
+                  34.1967832548951
+                ],
+                [
+                  -83.23649643450317,
+                  34.197596890277005
+                ],
+                [
+                  -83.23581217737544,
+                  34.179056185487106
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6001",
+          "name": "Thomson Freight",
+          "loc": "McDuffie, GA",
+          "lat": 32.341,
+          "lon": -83.751,
+          "acreage": 980,
+          "domains": {
+            "transportation": 3.2,
+            "environmental": 3.45,
+            "energy": 2.8,
+            "social": 4.3
+          },
+          "composite": 3.44,
+          "pct": 61,
+          "crit": {
+            "major_road": {
+              "s": 4,
+              "m": "1.2 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "4.3 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "14%"
+            },
+            "floodplain_100": {
+              "s": 4,
+              "m": "6%"
+            },
+            "floodplain_500": {
+              "s": 4,
+              "m": "4%"
+            },
+            "slope": {
+              "s": 2,
+              "m": "9.5%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "5%"
+            },
+            "water_body": {
+              "s": 5,
+              "m": "2%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "4.4 mi"
+            },
+            "natural_gas": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "hospital": {
+              "s": 5,
+              "m": "5.7 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "technical_school": {
+              "s": 4,
+              "m": "0.6 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.76208651733069,
+                  32.33298991977438
+                ],
+                [
+                  -83.73982680372423,
+                  32.33246486620129
+                ],
+                [
+                  -83.74021605970698,
+                  32.350332842914575
+                ],
+                [
+                  -83.76144780263974,
+                  32.35040880942764
+                ],
+                [
+                  -83.76158590868957,
+                  32.332056185487104
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6010",
+          "name": "Swainsboro Flats",
+          "loc": "Emanuel, GA",
+          "lat": 32.674,
+          "lon": -84.137,
+          "acreage": 420,
+          "domains": {
+            "transportation": 3.2,
+            "environmental": 4.05,
+            "energy": 2.6,
+            "social": 3.8
+          },
+          "composite": 3.41,
+          "pct": 60,
+          "crit": {
+            "major_road": {
+              "s": 4,
+              "m": "1.3 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "4.4 mi"
+            },
+            "floodway": {
+              "s": 4,
+              "m": "7%"
+            },
+            "floodplain_100": {
+              "s": 4,
+              "m": "7%"
+            },
+            "floodplain_500": {
+              "s": 5,
+              "m": "1%"
+            },
+            "slope": {
+              "s": 4,
+              "m": "4.6%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "17%"
+            },
+            "water_body": {
+              "s": 5,
+              "m": "0%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "4.2 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "4.6 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "1.8 mi"
+            },
+            "technical_school": {
+              "s": 3,
+              "m": "2.5 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -84.14412071894989,
+                  32.66787413263995
+                ],
+                [
+                  -84.13080336030846,
+                  32.66858704995557
+                ],
+                [
+                  -84.1304297506917,
+                  32.679157579604535
+                ],
+                [
+                  -84.14372901666847,
+                  32.67961470390565
+                ],
+                [
+                  -84.14395581861523,
+                  32.668144898999
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5006",
+          "name": "Valdosta Rail Hub",
+          "loc": "Chatham, GA",
+          "lat": 30.83,
+          "lon": -83.28,
+          "acreage": 410,
+          "domains": {
+            "transportation": 3.2,
+            "environmental": 2.9,
+            "energy": 2.6,
+            "social": 3.8
+          },
+          "composite": 3.12,
+          "pct": 53,
+          "crit": {
+            "major_road": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "3.6 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "19%"
+            },
+            "floodplain_100": {
+              "s": 3,
+              "m": "12%"
+            },
+            "floodplain_500": {
+              "s": 4,
+              "m": "3%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "5.9%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "7%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "24%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "3.2 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "4.1 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "2.8 mi"
+            },
+            "technical_school": {
+              "s": 3,
+              "m": "2.6 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.28706773352597,
+                  30.824845597472017
+                ],
+                [
+                  -83.27370298664927,
+                  30.824507435112785
+                ],
+                [
+                  -83.27394245558976,
+                  30.835413985810778
+                ],
+                [
+                  -83.28609183738197,
+                  30.83547671725074
+                ],
+                [
+                  -83.28673696703397,
+                  30.824215022498688
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5005",
+          "name": "Perry Megasite",
+          "loc": "Lowndes, GA",
+          "lat": 32.46,
+          "lon": -83.73,
+          "acreage": 1100,
+          "domains": {
+            "transportation": 4.0,
+            "environmental": 2.7,
+            "energy": 2.0,
+            "social": 3.55
+          },
+          "composite": 3.06,
+          "pct": 52,
+          "crit": {
+            "major_road": {
+              "s": 4,
+              "m": "0.7 mi"
+            },
+            "minor_road": {
+              "s": 4,
+              "m": "1.4 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "18%"
+            },
+            "floodplain_100": {
+              "s": 2,
+              "m": "19%"
+            },
+            "floodplain_500": {
+              "s": 3,
+              "m": "15%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "7.6%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "14%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "28%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "3.3 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "3.5 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "3.3 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "4.2 mi"
+            },
+            "technical_school": {
+              "s": 3,
+              "m": "2.7 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.74159580706012,
+                  32.45083180440566
+                ],
+                [
+                  -83.71911978472107,
+                  32.451185035646425
+                ],
+                [
+                  -83.7193979404846,
+                  32.47046860020546
+                ],
+                [
+                  -83.74162909563304,
+                  32.46972376549834
+                ],
+                [
+                  -83.74123010686594,
+                  32.45052441376294
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6014",
+          "name": "Nahunta Yard",
+          "loc": "Brantley, GA",
+          "lat": 34.039,
+          "lon": -84.336,
+          "acreage": 180,
+          "domains": {
+            "transportation": 4.0,
+            "environmental": 2.8,
+            "energy": 2.0,
+            "social": 3.3
+          },
+          "composite": 3.02,
+          "pct": 51,
+          "crit": {
+            "major_road": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "minor_road": {
+              "s": 4,
+              "m": "1.2 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "27%"
+            },
+            "floodplain_100": {
+              "s": 3,
+              "m": "13%"
+            },
+            "floodplain_500": {
+              "s": 1,
+              "m": "41%"
+            },
+            "slope": {
+              "s": 4,
+              "m": "3.8%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "7%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "26%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "4.2 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "4.2 mi"
+            },
+            "hospital": {
+              "s": 3,
+              "m": "1.9 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "2.8 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "3.2 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -84.34047100076813,
+                  34.03523312344438
+                ],
+                [
+                  -84.33162397728195,
+                  34.03558250071927
+                ],
+                [
+                  -84.33181652808786,
+                  34.0431409435934
+                ],
+                [
+                  -84.34038764372302,
+                  34.04323377783676
+                ],
+                [
+                  -84.34062563463425,
+                  34.03516693663733
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6025",
+          "name": "Gibson Crossing",
+          "loc": "Glascock, GA",
+          "lat": 32.89,
+          "lon": -84.114,
+          "acreage": 980,
+          "domains": {
+            "transportation": 2.6,
+            "environmental": 2.8,
+            "energy": 2.8,
+            "social": 3.8
+          },
+          "composite": 3.0,
+          "pct": 50,
+          "crit": {
+            "major_road": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "4.5 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "26%"
+            },
+            "floodplain_100": {
+              "s": 2,
+              "m": "25%"
+            },
+            "floodplain_500": {
+              "s": 5,
+              "m": "0%"
+            },
+            "slope": {
+              "s": 2,
+              "m": "9.7%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "4%"
+            },
+            "water_body": {
+              "s": 4,
+              "m": "6%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "4.3 mi"
+            },
+            "natural_gas": {
+              "s": 4,
+              "m": "1.2 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "3.7 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "technical_school": {
+              "s": 3,
+              "m": "2.7 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -84.1245622460252,
+                  32.88117033960278
+                ],
+                [
+                  -84.10304587635592,
+                  32.88037151093556
+                ],
+                [
+                  -84.10248869214864,
+                  32.899610370580845
+                ],
+                [
+                  -84.1243962670873,
+                  32.89801463230154
+                ],
+                [
+                  -84.12465101635998,
+                  32.881056185487104
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6021",
+          "name": "Soperton Woods",
+          "loc": "Treutlen, GA",
+          "lat": 30.83,
+          "lon": -81.541,
+          "acreage": 980,
+          "domains": {
+            "transportation": 2.0,
+            "environmental": 2.75,
+            "energy": 3.0,
+            "social": 3.35
+          },
+          "composite": 2.77,
+          "pct": 44,
+          "crit": {
+            "major_road": {
+              "s": 2,
+              "m": "4.4 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "4.2 mi"
+            },
+            "floodway": {
+              "s": 4,
+              "m": "7%"
+            },
+            "floodplain_100": {
+              "s": 2,
+              "m": "28%"
+            },
+            "floodplain_500": {
+              "s": 2,
+              "m": "25%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "6.2%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "17%"
+            },
+            "water_body": {
+              "s": 1,
+              "m": "42%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "natural_gas": {
+              "s": 3,
+              "m": "2.2 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "3.1 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "3.1 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "3.7 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -81.55171636888326,
+                  30.820682458641198
+                ],
+                [
+                  -81.52996448939268,
+                  30.820311372359427
+                ],
+                [
+                  -81.53017334815529,
+                  30.838130638756375
+                ],
+                [
+                  -81.55226772282649,
+                  30.838501164698254
+                ],
+                [
+                  -81.55141562970948,
+                  30.8210561854871
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6022",
+          "name": "Wrens Industrial",
+          "loc": "Jefferson, GA",
+          "lat": 32.068,
+          "lon": -82.217,
+          "acreage": 560,
+          "domains": {
+            "transportation": 2.0,
+            "environmental": 3.2,
+            "energy": 2.8,
+            "social": 2.5
+          },
+          "composite": 2.62,
+          "pct": 41,
+          "crit": {
+            "major_road": {
+              "s": 2,
+              "m": "4.2 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "4.2 mi"
+            },
+            "floodway": {
+              "s": 4,
+              "m": "8%"
+            },
+            "floodplain_100": {
+              "s": 2,
+              "m": "24%"
+            },
+            "floodplain_500": {
+              "s": 3,
+              "m": "13%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "6.3%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "9%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "12%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "4.3 mi"
+            },
+            "natural_gas": {
+              "s": 4,
+              "m": "1.2 mi"
+            },
+            "hospital": {
+              "s": 3,
+              "m": "1.5 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "2.7 mi"
+            },
+            "technical_school": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -82.22500247403669,
+                  32.06176198421371
+                ],
+                [
+                  -82.20882448194062,
+                  32.060792896002084
+                ],
+                [
+                  -82.20870631484406,
+                  32.07395986827512
+                ],
+                [
+                  -82.22524141513344,
+                  32.07510116016531
+                ],
+                [
+                  -82.2249782157862,
+                  32.06123911172188
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5007",
+          "name": "Savannah Inland Port",
+          "loc": "Dougherty, GA",
+          "lat": 32.08,
+          "lon": -81.09,
+          "acreage": 340,
+          "domains": {
+            "transportation": 2.0,
+            "environmental": 3.1,
+            "energy": 2.4,
+            "social": 3.05
+          },
+          "composite": 2.64,
+          "pct": 41,
+          "crit": {
+            "major_road": {
+              "s": 2,
+              "m": "3.7 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "3.5 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "30%"
+            },
+            "floodplain_100": {
+              "s": 4,
+              "m": "7%"
+            },
+            "floodplain_500": {
+              "s": 3,
+              "m": "12%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "7.2%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "7%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "13%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "3.5 mi"
+            },
+            "natural_gas": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "4.3 mi"
+            },
+            "school": {
+              "s": 4,
+              "m": "1.2 mi"
+            },
+            "technical_school": {
+              "s": 3,
+              "m": "2.5 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -81.09572667327276,
+                  32.0744422664088
+                ],
+                [
+                  -81.08428487041569,
+                  32.07488436639776
+                ],
+                [
+                  -81.08305215435976,
+                  32.085445047602306
+                ],
+                [
+                  -81.09630237055497,
+                  32.08550145504229
+                ],
+                [
+                  -81.09621739162851,
+                  32.07473195829534
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6007",
+          "name": "Bainbridge Port",
+          "loc": "Decatur, GA",
+          "lat": 33.44,
+          "lon": -81.709,
+          "acreage": 560,
+          "domains": {
+            "transportation": 1.0,
+            "environmental": 3.25,
+            "energy": 3.2,
+            "social": 3.05
+          },
+          "composite": 2.62,
+          "pct": 41,
+          "crit": {
+            "major_road": {
+              "s": 1,
+              "m": "6.7 mi"
+            },
+            "minor_road": {
+              "s": 1,
+              "m": "6.6 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "12%"
+            },
+            "floodplain_100": {
+              "s": 4,
+              "m": "4%"
+            },
+            "floodplain_500": {
+              "s": 3,
+              "m": "16%"
+            },
+            "slope": {
+              "s": 4,
+              "m": "4.1%"
+            },
+            "wetland": {
+              "s": 2,
+              "m": "26%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "16%"
+            },
+            "transmission": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "4.3 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "4.8 mi"
+            },
+            "school": {
+              "s": 4,
+              "m": "1.2 mi"
+            },
+            "technical_school": {
+              "s": 3,
+              "m": "2.0 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -81.7162708956357,
+                  33.433659954692544
+                ],
+                [
+                  -81.70172798692425,
+                  33.432964123984114
+                ],
+                [
+                  -81.70034580735239,
+                  33.44740510860359
+                ],
+                [
+                  -81.71643015112623,
+                  33.44711156724985
+                ],
+                [
+                  -81.71710207933471,
+                  33.43323911172188
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5008",
+          "name": "Albany Commerce Center",
+          "loc": "Floyd, GA",
+          "lat": 31.58,
+          "lon": -84.16,
+          "acreage": 640,
+          "domains": {
+            "transportation": 2.4,
+            "environmental": 2.55,
+            "energy": 2.0,
+            "social": 3.6
+          },
+          "composite": 2.64,
+          "pct": 41,
+          "crit": {
+            "major_road": {
+              "s": 2,
+              "m": "4.2 mi"
+            },
+            "minor_road": {
+              "s": 3,
+              "m": "1.6 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "11%"
+            },
+            "floodplain_100": {
+              "s": 3,
+              "m": "18%"
+            },
+            "floodplain_500": {
+              "s": 1,
+              "m": "33%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "6.1%"
+            },
+            "wetland": {
+              "s": 2,
+              "m": "28%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "26%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "4.2 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "3.2 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "3.7 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "1.6 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "3.8 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -84.16918221691137,
+                  31.57229354413943
+                ],
+                [
+                  -84.15206760165948,
+                  31.573583947065792
+                ],
+                [
+                  -84.15189166508944,
+                  31.586824806122866
+                ],
+                [
+                  -84.16789561418223,
+                  31.587995985359402
+                ],
+                [
+                  -84.1684841067608,
+                  31.572772306409433
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6020",
+          "name": "Lyons Interchange",
+          "loc": "Toombs, GA",
+          "lat": 31.899,
+          "lon": -82.219,
+          "acreage": 320,
+          "domains": {
+            "transportation": 2.6,
+            "environmental": 2.3,
+            "energy": 3.2,
+            "social": 2.35
+          },
+          "composite": 2.61,
+          "pct": 40,
+          "crit": {
+            "major_road": {
+              "s": 3,
+              "m": "2.5 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "4.4 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "27%"
+            },
+            "floodplain_100": {
+              "s": 1,
+              "m": "38%"
+            },
+            "floodplain_500": {
+              "s": 4,
+              "m": "4%"
+            },
+            "slope": {
+              "s": 2,
+              "m": "10.0%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "6%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "26%"
+            },
+            "transmission": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "4.4 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "3.4 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "3.7 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "4.2 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -82.22445244968016,
+                  31.893624833483575
+                ],
+                [
+                  -82.21302962629792,
+                  31.89355027519986
+                ],
+                [
+                  -82.21256144214138,
+                  31.904617996021155
+                ],
+                [
+                  -82.22547467906682,
+                  31.903660237138098
+                ],
+                [
+                  -82.22501986580274,
+                  31.893889248849774
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6026",
+          "name": "Warrenton Yard",
+          "loc": "Warren, GA",
+          "lat": 32.042,
+          "lon": -81.992,
+          "acreage": 420,
+          "domains": {
+            "transportation": 1.6,
+            "environmental": 3.35,
+            "energy": 2.2,
+            "social": 3.05
+          },
+          "composite": 2.55,
+          "pct": 39,
+          "crit": {
+            "major_road": {
+              "s": 2,
+              "m": "4.4 mi"
+            },
+            "minor_road": {
+              "s": 1,
+              "m": "6.7 mi"
+            },
+            "floodway": {
+              "s": 4,
+              "m": "6%"
+            },
+            "floodplain_100": {
+              "s": 3,
+              "m": "16%"
+            },
+            "floodplain_500": {
+              "s": 1,
+              "m": "42%"
+            },
+            "slope": {
+              "s": 4,
+              "m": "4.1%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "12%"
+            },
+            "water_body": {
+              "s": 4,
+              "m": "8%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "2.5 mi"
+            },
+            "natural_gas": {
+              "s": 1,
+              "m": "7.0 mi"
+            },
+            "hospital": {
+              "s": 3,
+              "m": "1.8 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "3.9 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "3.5 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -81.99834168940954,
+                  32.03558767525517
+                ],
+                [
+                  -81.98546563605109,
+                  32.0357013727733
+                ],
+                [
+                  -81.98568350065919,
+                  32.047858217694596
+                ],
+                [
+                  -81.99960348496799,
+                  32.04744522989023
+                ],
+                [
+                  -81.99890737445011,
+                  32.036144898999005
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6024",
+          "name": "Sandersville Kaolin",
+          "loc": "Washington, GA",
+          "lat": 31.332,
+          "lon": -84.403,
+          "acreage": 120,
+          "domains": {
+            "transportation": 1.4,
+            "environmental": 2.2,
+            "energy": 2.8,
+            "social": 3.6
+          },
+          "composite": 2.5,
+          "pct": 38,
+          "crit": {
+            "major_road": {
+              "s": 1,
+              "m": "6.8 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "4.4 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "24%"
+            },
+            "floodplain_100": {
+              "s": 3,
+              "m": "17%"
+            },
+            "floodplain_500": {
+              "s": 4,
+              "m": "7%"
+            },
+            "slope": {
+              "s": 1,
+              "m": "13.3%"
+            },
+            "wetland": {
+              "s": 2,
+              "m": "28%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "26%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "4.3 mi"
+            },
+            "natural_gas": {
+              "s": 4,
+              "m": "0.9 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "3.1 mi"
+            },
+            "school": {
+              "s": 3,
+              "m": "2.5 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "3.6 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -84.40675866997263,
+                  31.328767887804553
+                ],
+                [
+                  -84.39969978602059,
+                  31.328710845532342
+                ],
+                [
+                  -84.39917047814663,
+                  31.33542347572669
+                ],
+                [
+                  -84.4067874072933,
+                  31.33539752457641
+                ],
+                [
+                  -84.406664011227,
+                  31.328870316869903
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6013",
+          "name": "Reidsville East",
+          "loc": "Tattnall, GA",
+          "lat": 32.429,
+          "lon": -82.407,
+          "acreage": 1200,
+          "domains": {
+            "transportation": 3.0,
+            "environmental": 1.65,
+            "energy": 3.0,
+            "social": 2.05
+          },
+          "composite": 2.42,
+          "pct": 36,
+          "crit": {
+            "major_road": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "minor_road": {
+              "s": 3,
+              "m": "2.2 mi"
+            },
+            "floodway": {
+              "s": 1,
+              "m": "40%"
+            },
+            "floodplain_100": {
+              "s": 3,
+              "m": "17%"
+            },
+            "floodplain_500": {
+              "s": 2,
+              "m": "28%"
+            },
+            "slope": {
+              "s": 1,
+              "m": "13.1%"
+            },
+            "wetland": {
+              "s": 2,
+              "m": "29%"
+            },
+            "water_body": {
+              "s": 1,
+              "m": "39%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "natural_gas": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "hospital": {
+              "s": 3,
+              "m": "2.5 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "3.7 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "4.8 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -82.42004273537277,
+                  32.419223140170025
+                ],
+                [
+                  -82.39592559202384,
+                  32.419792285721925
+                ],
+                [
+                  -82.39402064097649,
+                  32.438209784503535
+                ],
+                [
+                  -82.41895470205755,
+                  32.4380459671158
+                ],
+                [
+                  -82.41872543039904,
+                  32.419103072954286
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6004",
+          "name": "Vidalia Commerce",
+          "loc": "Toombs, GA",
+          "lat": 34.037,
+          "lon": -83.534,
+          "acreage": 980,
+          "domains": {
+            "transportation": 2.4,
+            "environmental": 1.9,
+            "energy": 2.4,
+            "social": 3.05
+          },
+          "composite": 2.44,
+          "pct": 36,
+          "crit": {
+            "major_road": {
+              "s": 2,
+              "m": "4.5 mi"
+            },
+            "minor_road": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "24%"
+            },
+            "floodplain_100": {
+              "s": 3,
+              "m": "14%"
+            },
+            "floodplain_500": {
+              "s": 2,
+              "m": "25%"
+            },
+            "slope": {
+              "s": 1,
+              "m": "12.8%"
+            },
+            "wetland": {
+              "s": 2,
+              "m": "28%"
+            },
+            "water_body": {
+              "s": 1,
+              "m": "39%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "4.4 mi"
+            },
+            "natural_gas": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "hospital": {
+              "s": 3,
+              "m": "2.6 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "4.8 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "4.7 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.54416908371806,
+                  34.02764293415841
+                ],
+                [
+                  -83.5220245985943,
+                  34.02816946209386
+                ],
+                [
+                  -83.52207509346815,
+                  34.04699139576117
+                ],
+                [
+                  -83.54597147854739,
+                  34.045653253344966
+                ],
+                [
+                  -83.54479289299682,
+                  34.0280561854871
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6015",
+          "name": "Hazlehurst Hub",
+          "loc": "Jeff Davis, GA",
+          "lat": 31.703,
+          "lon": -83.012,
+          "acreage": 980,
+          "domains": {
+            "transportation": 2.2,
+            "environmental": 2.15,
+            "energy": 3.0,
+            "social": 2.3
+          },
+          "composite": 2.41,
+          "pct": 35,
+          "crit": {
+            "major_road": {
+              "s": 1,
+              "m": "6.7 mi"
+            },
+            "minor_road": {
+              "s": 4,
+              "m": "1.3 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "17%"
+            },
+            "floodplain_100": {
+              "s": 2,
+              "m": "28%"
+            },
+            "floodplain_500": {
+              "s": 2,
+              "m": "29%"
+            },
+            "slope": {
+              "s": 1,
+              "m": "13.7%"
+            },
+            "wetland": {
+              "s": 2,
+              "m": "28%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "17%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "natural_gas": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "hospital": {
+              "s": 2,
+              "m": "1.3 mi"
+            },
+            "school": {
+              "s": 1,
+              "m": "6.2 mi"
+            },
+            "technical_school": {
+              "s": 1,
+              "m": "6.3 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.02265706543004,
+                  31.694282926687777
+                ],
+                [
+                  -83.00232687212565,
+                  31.694782444058045
+                ],
+                [
+                  -83.0022245901202,
+                  31.712815213745746
+                ],
+                [
+                  -83.02250506579732,
+                  31.711342844381868
+                ],
+                [
+                  -83.02251244355132,
+                  31.694056185487103
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6012",
+          "name": "Claxton Terminal",
+          "loc": "Evans, GA",
+          "lat": 32.581,
+          "lon": -83.035,
+          "acreage": 980,
+          "domains": {
+            "transportation": 3.0,
+            "environmental": 2.4,
+            "energy": 1.4,
+            "social": 2.5
+          },
+          "composite": 2.33,
+          "pct": 33,
+          "crit": {
+            "major_road": {
+              "s": 3,
+              "m": "2.5 mi"
+            },
+            "minor_road": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "17%"
+            },
+            "floodplain_100": {
+              "s": 3,
+              "m": "17%"
+            },
+            "floodplain_500": {
+              "s": 1,
+              "m": "38%"
+            },
+            "slope": {
+              "s": 1,
+              "m": "13.3%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "15%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "16%"
+            },
+            "transmission": {
+              "s": 1,
+              "m": "6.6 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "4.2 mi"
+            },
+            "hospital": {
+              "s": 2,
+              "m": "0.8 mi"
+            },
+            "school": {
+              "s": 1,
+              "m": "5.5 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "5.0 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.0449828916254,
+                  32.572969635151
+                ],
+                [
+                  -83.02498306320523,
+                  32.57156391427714
+                ],
+                [
+                  -83.02513677489421,
+                  32.590458610297674
+                ],
+                [
+                  -83.04682603903079,
+                  32.589930825473004
+                ],
+                [
+                  -83.0456141530112,
+                  32.57205618548711
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5009",
+          "name": "Rome Northwest",
+          "loc": "Whitfield, GA",
+          "lat": 34.26,
+          "lon": -85.16,
+          "acreage": 780,
+          "domains": {
+            "transportation": 2.6,
+            "environmental": 2.35,
+            "energy": 2.0,
+            "social": 2.25
+          },
+          "composite": 2.3,
+          "pct": 32,
+          "crit": {
+            "major_road": {
+              "s": 3,
+              "m": "2.2 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "3.6 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "17%"
+            },
+            "floodplain_100": {
+              "s": 2,
+              "m": "24%"
+            },
+            "floodplain_500": {
+              "s": 2,
+              "m": "20%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "5.1%"
+            },
+            "wetland": {
+              "s": 2,
+              "m": "22%"
+            },
+            "water_body": {
+              "s": 1,
+              "m": "33%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "4.7 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "4.1 mi"
+            },
+            "hospital": {
+              "s": 3,
+              "m": "1.7 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "3.6 mi"
+            },
+            "technical_school": {
+              "s": 3,
+              "m": "3.0 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -85.17052630399522,
+                  34.252375733782515
+                ],
+                [
+                  -85.1499855929566,
+                  34.25222070700839
+                ],
+                [
+                  -85.14938523224379,
+                  34.26790035906236
+                ],
+                [
+                  -85.16910947496034,
+                  34.26749394989982
+                ],
+                [
+                  -85.16965425245553,
+                  34.25202084232413
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5010",
+          "name": "Dalton Freight Yard",
+          "loc": "Tift, GA",
+          "lat": 34.77,
+          "lon": -84.97,
+          "acreage": 340,
+          "domains": {
+            "transportation": 2.6,
+            "environmental": 2.2,
+            "energy": 2.0,
+            "social": 1.75
+          },
+          "composite": 2.14,
+          "pct": 28,
+          "crit": {
+            "major_road": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "4.1 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "14%"
+            },
+            "floodplain_100": {
+              "s": 2,
+              "m": "30%"
+            },
+            "floodplain_500": {
+              "s": 2,
+              "m": "25%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "5.3%"
+            },
+            "wetland": {
+              "s": 1,
+              "m": "35%"
+            },
+            "water_body": {
+              "s": 1,
+              "m": "31%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "3.7 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "4.3 mi"
+            },
+            "hospital": {
+              "s": 2,
+              "m": "1.4 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "4.6 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "4.3 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -84.97650757173824,
+                  34.76503193119961
+                ],
+                [
+                  -84.96345669254268,
+                  34.76422897888529
+                ],
+                [
+                  -84.96374172043053,
+                  34.77491317051753
+                ],
+                [
+                  -84.97717890115366,
+                  34.77528008608363
+                ],
+                [
+                  -84.97641311709103,
+                  34.76473195829534
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6027",
+          "name": "Washington Mills",
+          "loc": "Wilkes, GA",
+          "lat": 32.52,
+          "lon": -83.683,
+          "acreage": 320,
+          "domains": {
+            "transportation": 1.0,
+            "environmental": 2.05,
+            "energy": 2.2,
+            "social": 3.05
+          },
+          "composite": 2.08,
+          "pct": 27,
+          "crit": {
+            "major_road": {
+              "s": 1,
+              "m": "6.7 mi"
+            },
+            "minor_road": {
+              "s": 1,
+              "m": "7.0 mi"
+            },
+            "floodway": {
+              "s": 3,
+              "m": "15%"
+            },
+            "floodplain_100": {
+              "s": 1,
+              "m": "40%"
+            },
+            "floodplain_500": {
+              "s": 1,
+              "m": "42%"
+            },
+            "slope": {
+              "s": 1,
+              "m": "13.6%"
+            },
+            "wetland": {
+              "s": 4,
+              "m": "7%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "28%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "2.6 mi"
+            },
+            "natural_gas": {
+              "s": 1,
+              "m": "6.8 mi"
+            },
+            "hospital": {
+              "s": 3,
+              "m": "2.2 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "3.9 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "4.6 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.68859089780617,
+                  32.51459046037008
+                ],
+                [
+                  -83.6775959753342,
+                  32.51449695867515
+                ],
+                [
+                  -83.67729724352571,
+                  32.52528153754238
+                ],
+                [
+                  -83.6897652487188,
+                  32.525216077997214
+                ],
+                [
+                  -83.68906110989865,
+                  32.51488924884978
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6023",
+          "name": "Louisville Depot",
+          "loc": "Jefferson, GA",
+          "lat": 30.927,
+          "lon": -83.61,
+          "acreage": 560,
+          "domains": {
+            "transportation": 1.0,
+            "environmental": 2.95,
+            "energy": 2.4,
+            "social": 1.75
+          },
+          "composite": 2.02,
+          "pct": 26,
+          "crit": {
+            "major_road": {
+              "s": 1,
+              "m": "7.0 mi"
+            },
+            "minor_road": {
+              "s": 1,
+              "m": "6.9 mi"
+            },
+            "floodway": {
+              "s": 4,
+              "m": "4%"
+            },
+            "floodplain_100": {
+              "s": 3,
+              "m": "15%"
+            },
+            "floodplain_500": {
+              "s": 3,
+              "m": "13%"
+            },
+            "slope": {
+              "s": 3,
+              "m": "6.1%"
+            },
+            "wetland": {
+              "s": 1,
+              "m": "41%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "12%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "4.4 mi"
+            },
+            "natural_gas": {
+              "s": 3,
+              "m": "2.3 mi"
+            },
+            "hospital": {
+              "s": 2,
+              "m": "0.6 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "4.9 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "4.5 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.61771892903839,
+                  30.921020865366494
+                ],
+                [
+                  -83.60161414399437,
+                  30.919748725520968
+                ],
+                [
+                  -83.60184526169292,
+                  30.933583587147
+                ],
+                [
+                  -83.61770170349307,
+                  30.934478062878334
+                ],
+                [
+                  -83.6178814508084,
+                  30.92023911172188
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6009",
+          "name": "Elberton Granite",
+          "loc": "Elbert, GA",
+          "lat": 33.925,
+          "lon": -82.803,
+          "acreage": 1200,
+          "domains": {
+            "transportation": 1.6,
+            "environmental": 1.45,
+            "energy": 3.0,
+            "social": 2.05
+          },
+          "composite": 2.02,
+          "pct": 26,
+          "crit": {
+            "major_road": {
+              "s": 2,
+              "m": "4.1 mi"
+            },
+            "minor_road": {
+              "s": 1,
+              "m": "6.9 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "24%"
+            },
+            "floodplain_100": {
+              "s": 1,
+              "m": "38%"
+            },
+            "floodplain_500": {
+              "s": 2,
+              "m": "26%"
+            },
+            "slope": {
+              "s": 1,
+              "m": "13.6%"
+            },
+            "wetland": {
+              "s": 1,
+              "m": "38%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "26%"
+            },
+            "transmission": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "natural_gas": {
+              "s": 3,
+              "m": "2.4 mi"
+            },
+            "hospital": {
+              "s": 3,
+              "m": "1.6 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "3.3 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "4.1 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -82.81567015940024,
+                  33.9156019711052
+                ],
+                [
+                  -82.79107241611122,
+                  33.91586814527765
+                ],
+                [
+                  -82.79151063837506,
+                  33.9337524379477
+                ],
+                [
+                  -82.81421297504163,
+                  33.933745746857404
+                ],
+                [
+                  -82.81492733026641,
+                  33.91510307295428
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6000",
+          "name": "Hartwell Yard",
+          "loc": "Hart, GA",
+          "lat": 31.313,
+          "lon": -82.522,
+          "acreage": 320,
+          "domains": {
+            "transportation": 1.4,
+            "environmental": 1.8,
+            "energy": 3.2,
+            "social": 1.5
+          },
+          "composite": 1.98,
+          "pct": 24,
+          "crit": {
+            "major_road": {
+              "s": 1,
+              "m": "6.8 mi"
+            },
+            "minor_road": {
+              "s": 2,
+              "m": "4.1 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "24%"
+            },
+            "floodplain_100": {
+              "s": 1,
+              "m": "41%"
+            },
+            "floodplain_500": {
+              "s": 1,
+              "m": "38%"
+            },
+            "slope": {
+              "s": 2,
+              "m": "9.1%"
+            },
+            "wetland": {
+              "s": 2,
+              "m": "25%"
+            },
+            "water_body": {
+              "s": 3,
+              "m": "16%"
+            },
+            "transmission": {
+              "s": 4,
+              "m": "1.1 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "4.5 mi"
+            },
+            "hospital": {
+              "s": 2,
+              "m": "0.6 mi"
+            },
+            "school": {
+              "s": 1,
+              "m": "5.5 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "4.8 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -82.5277988986617,
+                  31.307830686429842
+                ],
+                [
+                  -82.5166456074457,
+                  31.30842943336829
+                ],
+                [
+                  -82.51644005815058,
+                  31.31833202619913
+                ],
+                [
+                  -82.52787814197657,
+                  31.31788278773516
+                ],
+                [
+                  -82.52798209795746,
+                  31.307889248849772
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-5011",
+          "name": "Tifton Agripark",
+          "loc": "Muscogee, GA",
+          "lat": 31.45,
+          "lon": -83.51,
+          "acreage": 520,
+          "domains": {
+            "transportation": 2.2,
+            "environmental": 1.4,
+            "energy": 1.0,
+            "social": 3.05
+          },
+          "composite": 1.91,
+          "pct": 23,
+          "crit": {
+            "major_road": {
+              "s": 3,
+              "m": "2.6 mi"
+            },
+            "minor_road": {
+              "s": 1,
+              "m": "5.4 mi"
+            },
+            "floodway": {
+              "s": 1,
+              "m": "39%"
+            },
+            "floodplain_100": {
+              "s": 1,
+              "m": "40%"
+            },
+            "floodplain_500": {
+              "s": 2,
+              "m": "23%"
+            },
+            "slope": {
+              "s": 2,
+              "m": "8.5%"
+            },
+            "wetland": {
+              "s": 1,
+              "m": "36%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "25%"
+            },
+            "transmission": {
+              "s": 1,
+              "m": "5.6 mi"
+            },
+            "natural_gas": {
+              "s": 1,
+              "m": "5.3 mi"
+            },
+            "hospital": {
+              "s": 3,
+              "m": "2.8 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "3.4 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "4.5 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -83.5168870404719,
+                  31.444193168978977
+                ],
+                [
+                  -83.50307861259945,
+                  31.44328577178577
+                ],
+                [
+                  -83.50182782631003,
+                  31.456393245126517
+                ],
+                [
+                  -83.51683685415135,
+                  31.45632985615703
+                ],
+                [
+                  -83.51763683858002,
+                  31.44348504503897
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6005",
+          "name": "Fitzgerald Rail",
+          "loc": "Ben Hill, GA",
+          "lat": 31.571,
+          "lon": -84.112,
+          "acreage": 980,
+          "domains": {
+            "transportation": 1.8,
+            "environmental": 1.65,
+            "energy": 1.6,
+            "social": 2.35
+          },
+          "composite": 1.85,
+          "pct": 21,
+          "crit": {
+            "major_road": {
+              "s": 1,
+              "m": "6.8 mi"
+            },
+            "minor_road": {
+              "s": 3,
+              "m": "2.5 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "29%"
+            },
+            "floodplain_100": {
+              "s": 1,
+              "m": "43%"
+            },
+            "floodplain_500": {
+              "s": 1,
+              "m": "43%"
+            },
+            "slope": {
+              "s": 1,
+              "m": "13.0%"
+            },
+            "wetland": {
+              "s": 3,
+              "m": "13%"
+            },
+            "water_body": {
+              "s": 2,
+              "m": "25%"
+            },
+            "transmission": {
+              "s": 2,
+              "m": "4.4 mi"
+            },
+            "natural_gas": {
+              "s": 1,
+              "m": "7.0 mi"
+            },
+            "hospital": {
+              "s": 4,
+              "m": "3.1 mi"
+            },
+            "school": {
+              "s": 2,
+              "m": "3.5 mi"
+            },
+            "technical_school": {
+              "s": 2,
+              "m": "3.4 mi"
+            },
+            "cemetery": {
+              "s": 1,
+              "m": "Cemetery present"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -84.12326973649188,
+                  31.562815677811702
+                ],
+                [
+                  -84.10067985394372,
+                  31.561025201342876
+                ],
+                [
+                  -84.1011062440459,
+                  31.579622711921587
+                ],
+                [
+                  -84.12262012747273,
+                  31.579151715637725
+                ],
+                [
+                  -84.12249753297284,
+                  31.562056185487105
+                ]
+              ]
+            ]
+          }
+        },
+        {
+          "id": "GA-6006",
+          "name": "Americus Junction",
+          "loc": "Sumter, GA",
+          "lat": 34.101,
+          "lon": -82.526,
+          "acreage": 120,
+          "domains": {
+            "transportation": 1.0,
+            "environmental": 1.45,
+            "energy": 1.4,
+            "social": 2.3
+          },
+          "composite": 1.54,
+          "pct": 13,
+          "crit": {
+            "major_road": {
+              "s": 1,
+              "m": "7.0 mi"
+            },
+            "minor_road": {
+              "s": 1,
+              "m": "6.9 mi"
+            },
+            "floodway": {
+              "s": 2,
+              "m": "25%"
+            },
+            "floodplain_100": {
+              "s": 1,
+              "m": "39%"
+            },
+            "floodplain_500": {
+              "s": 1,
+              "m": "39%"
+            },
+            "slope": {
+              "s": 2,
+              "m": "9.4%"
+            },
+            "wetland": {
+              "s": 1,
+              "m": "39%"
+            },
+            "water_body": {
+              "s": 1,
+              "m": "43%"
+            },
+            "transmission": {
+              "s": 1,
+              "m": "6.8 mi"
+            },
+            "natural_gas": {
+              "s": 2,
+              "m": "4.5 mi"
+            },
+            "hospital": {
+              "s": 2,
+              "m": "0.9 mi"
+            },
+            "school": {
+              "s": 1,
+              "m": "6.3 mi"
+            },
+            "technical_school": {
+              "s": 1,
+              "m": "6.3 mi"
+            },
+            "cemetery": {
+              "s": 5,
+              "m": "None"
+            }
+          },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -82.53002997451136,
+                  34.09813335861115
+                ],
+                [
+                  -82.52254556175357,
+                  34.09778085707653
+                ],
+                [
+                  -82.52256481253816,
+                  34.10380050702974
+                ],
+                [
+                  -82.52994497242612,
+                  34.10415276243126
+                ],
+                [
+                  -82.5297795797998,
+                  34.0978703168699
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    };
+    const DOMAINS = DATA.domains, DOM_KEYS = Object.keys(DOMAINS);
+    const totW = DOM_KEYS.reduce((a, k) => a + DOMAINS[k].weight, 0);
+    const domColor = k => DOMAINS[k].color;
+    const scoreColor = s => s >= 4.5 ? '#1f8f4e' : s >= 3.5 ? '#5bb06a' : s >= 2.5 ? '#d99a16' : s >= 1.5 ? '#e07b1a' : '#c5402f';
+
+    // --- domain cards (step 2) ---
+    document.getElementById('dgrid').innerHTML = DOM_KEYS.map(k => {
+      const dv = DOMAINS[k], cw = Object.values(dv.criteria).reduce((a, c) => a + c.w, 0);
+      const crits = Object.values(dv.criteria).map(c => {
+        const pc = c.w / cw * 100;
+        return `<div class="crit"><span class="cn">${c.label}</span>
+      <span class="cbar"><i style="width:${pc}%;background:${dv.color}"></i></span>
+      <span class="cw">${c.w.toFixed(2)}</span></div>`;
+      }).join('');
+      return `<div class="dcard"><div class="dh" style="background:${dv.color}">
+      <span class="dt">${dv.label}</span><span class="dw">${Object.keys(dv.criteria).length} criteria</span></div>
+    <div class="db">${crits}</div></div>`;
+    }).join('');
+
+    // --- domain weight bars (step 3) ---
+    document.getElementById('domweights').innerHTML = DOM_KEYS
+      .slice().sort((a, b) => DOMAINS[b].weight - DOMAINS[a].weight).map(k => {
+        const pc = Math.round(DOMAINS[k].weight / totW * 100);
+        return `<div class="wrow"><span class="wl"><span class="dot" style="background:${domColor(k)}"></span>${DOMAINS[k].label}</span>
+      <span class="track"><i style="width:${pc}%;background:${domColor(k)}"></i></span>
+      <span class="wv">${pc}%</span></div>`;
+      }).join('');
+
+    // --- worked example (use the top site) ---
+    const s = DATA.sites.slice().sort((a, b) => b.pct - a.pct)[0];
+    const rows = DOM_KEYS.map(k => {
+      const dw = DOMAINS[k].weight, ds = s.domains[k], contrib = dw * ds;
+      return `<tr><td><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${domColor(k)};margin-right:7px"></span>${DOMAINS[k].label}</td>
+    <td class="num">${ds.toFixed(2)}</td><td class="num">${Math.round(dw / totW * 100)}%</td>
+    <td class="num">${contrib.toFixed(3)}</td></tr>`;
+    }).join('');
+    const comp = DOM_KEYS.reduce((a, k) => a + DOMAINS[k].weight * s.domains[k], 0) / totW;
+    const pct = Math.round((comp - 1) / 4 * 100);
+    document.getElementById('worktable').innerHTML =
+      `<thead><tr><th>Domain</th><th style="text-align:right">Score (1–5)</th><th style="text-align:right">Weight</th><th style="text-align:right">Weighted</th></tr></thead>
+   <tbody>${rows}
+   <tr class="total"><td>Composite = Σ weighted ÷ Σ weights</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="p">${comp.toFixed(2)}</span></td></tr></tbody>`;
+    document.getElementById('workladder').innerHTML =
+      `<div class="chip">${s.name}</div><span class="ar">→</span>
+   <div class="chip">Composite <b>${comp.toFixed(2)}</b>/5</div><span class="ar">→</span>
+   <div class="chip">( ${comp.toFixed(2)} − 1 ) ÷ 4 × 100</div><span class="ar">→</span>
+   <span class="inlinechip" style="background:${pct >= 75 ? '#1f8f4e' : pct >= 50 ? '#d99a16' : '#c5402f'};font-size:15px;padding:4px 12px">${pct}%</span>`;
+
+    document.getElementById('foot').innerHTML =
+      `<b>Scope.</b> This describes the scoring method. ` +
+      `Criterion thresholds and the ${DOM_KEYS.length} domain weights are configurable inputs to the method, not fixed constants — ` +
+      `adjusting them is how the definition of "suitable" is tuned to a given programme. ` +
+      `Composite = two-level weighted average (criteria within domains, domains into the composite), rescaled to 0–100%. `;
+  </script>
+</body>
+
+</html>
