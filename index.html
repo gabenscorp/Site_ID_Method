@@ -280,7 +280,6 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
-      margin-top: 18px
     }
 
     @media(max-width:720px) {
@@ -544,6 +543,41 @@
       color: #fff;
       vertical-align: middle
     }
+
+    /* hospital sweet-spot mini diagram */
+    .hband {
+      margin-top: 12px
+    }
+
+    .hband svg {
+      width: 100%;
+      height: 68px;
+      display: block
+    }
+
+    .hband .lab {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10.5px;
+      color: var(--ink3);
+      margin-top: 3px
+    }
+
+    .hband .zones {
+      display: flex;
+      font-size: 10px;
+      margin-top: 5px;
+      gap: 3px
+    }
+
+    .hband .zones span {
+      flex: 1;
+      text-align: center;
+      padding: 2px 0;
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 600
+    }
   </style>
 </head>
 
@@ -572,7 +606,7 @@
       <a href="#composite">3 · The composite</a>
       <a href="#percent">4 · To a percentage</a>
     </div>
-    <div class = "tocbar">
+    <div class="tocbar">
       <a href="#example">Worked example</a>
       <a href="#constraints">Social scoring</a>
     </div>
@@ -748,26 +782,33 @@
         <div class="card" style="margin:0">
           <div style="font-size:16px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">
             Farther is better · sensitive receptor</div>
-          <div style="font-weight:700;font-size:15px;margin-bottom:6px">Schools (elementary, middle, high)</div>
-          <p style="font-size:16px;color:var(--ink2)">Scored on <b>distance to the nearest</b> K-12 school. These serve vulnerable populations,
+          <div style="font-weight:700;font-size:15px;margin-bottom:6px">Schools (elementary, middle, and high)</div>
+          <p style="font-size:16px;color:var(--ink2)">Scored on <b>distance to the nearest</b> K-12 school. These serve
+            vulnerable populations,
             so a buffer is preferred - a greater distance scores higher (far → 5, near → 1).</p>
         </div>
         <div class="card" style="margin:0">
           <div style="font-size:16px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">
-            Farther is better · avoid</div>
+            OPTIMAL DISTANCE BAND · SWEET SPOT</div>
           <div style="font-weight:700;font-size:15px;margin-bottom:6px">Hospitals</div>
-          <p style="font-size:16px;color:var(--ink2)">Scored on <b>distance to the nearest</b> hospital, but <b> both extremes are penalized</b>:
-             too close creates a sensitive-receptor conflict, too far degrades emergency access. The best score is an <b>ideal middle band</b> 
+          <p style="font-size:16px;color:var(--ink2)">Scored on
+            <b>distance to the nearest</b> hospital, but
+            <b> both extremes are penalized</b> :
+            too close creates a sensitive-receptor conflict, too far degrades emergency access. The best score is an
+            <b>ideal middle band</b>
             - near enough to be served, far enough to avoid conflict.
           </p>
           <div class="hband" id="hband"></div>
         </div>
 
-        <div class = "card" style="margin:0">
-          <div style = "font-size: 16px;color:var(--ink3): text_transform:uppercase; letter-spacing:.5px;margin-bottom:4px">Closer is better · amenity</div>
+        <div class="card" style="margin:0">
+          <div
+            style="font-size: 16px;color:var(--ink3);text-transform:uppercase; letter-spacing:.5px;margin-bottom:4px">
+            Closer is better · amenity</div>
           <div style="font-weight:700;font-size:15px;margin-bottom:6px">Technical schools</div>
-          <p style="font-size:13.5px;color:var(--ink2)">Scored on <b>distance to the nearest</b> technical/vocational school —
-          a workforce amenity, so proximity is desirable (near → 5, far → 1).</p>
+          <p style="font-size:13.5px;color:var(--ink2)">Scored on <b>distance to the nearest</b> technical/vocational
+            school —
+            a workforce amenity, so proximity is desirable (near → 5, far → 1).</p>
         </div>
         <div class="card" style="margin:0">
           <div style="font-size:16px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">
@@ -780,13 +821,13 @@
         </div>
       </div>
       <div>
-        <div class="card" style="margin:0">
+        <div class="card" style="margin-top:16px; background:var(--paper2)">
           <div style="font-size:16px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">
             Combined</div>
           <div style="font-weight:700;font-size:15px;margin-bottom:6px">Social domain score</div>
           <p style="font-size:16px;color:var(--ink2)">The four criterion scores combine by weighted average into the
             Social domain's 1–5 score — which is then weighted into the composite alongside the other three domains.</p>
-      </div>
+        </div>
     </section>
 
     <div class="foot" id="foot"></div>
@@ -4952,25 +4993,25 @@
       <span class="dt">${dv.label}</span><span class="dw">${Object.keys(dv.criteria).length} criteria</span></div>
     <div class="db">${crits}</div></div>`;
     }).join('');
-    
+
     // --- hospital sweet-spot mini diagram ---
-    (function(){
-      const el=document.getElementById('hband'); if(!el) return;
+    (function () {
+      const el = document.getElementById('hband'); if (!el) return;
       // trapezoid: x in [0..1] mapped to distance 0..16 mi; score 1..5
       // breakpoints: <0.5 ->1 ramp to 5 at 1mi; flat 5 to 5mi; ramp down to 1 at 10mi; 1 beyond
-      const W=300,H=50,pad=4;
-      const pts=[[0,1],[0.5,1],[1,5],[5,5],[10,1],[16,1]];
-      const x=mi=>pad+(mi/16)*(W-2*pad);
-      const y=sc=>(H-pad)-((sc-1)/4)*(H-2*pad);
-      const path=pts.map((p,i)=>(i?'L':'M')+x(p[0]).toFixed(1)+' '+y(p[1]).toFixed(1)).join(' ');
-      const area=path+` L${x(16)} ${H-pad} L${x(0)} ${H-pad} Z`;
-      el.innerHTML=`<svg viewBox="0 0 ${W} ${H+2}" preserveAspectRatio="none">
-        <path d="${area}" fill="var(--d-s)" fill-opacity="0.16"/>
-        <path d="${path}" fill="none" stroke="var(--d-s)" stroke-width="2.5" stroke-linejoin="round"/>
-        <circle cx="${x(2.8)}" cy="${y(5)}" r="3.5" fill="var(--d-s)"/>
-      </svg>
-      <div class="lab"><span>0 mi</span><span>ideal band</span><span>16+ mi</span></div>
-      <div class="zones"><span style="background:#c5402f;flex:.6">too close</span><span style="background:#1f8f4e;flex:2.5">ideal (≈1–5 mi)</span><span style="background:#c5402f;flex:1.4">too far</span></div>`;
+      const W = 300, H = 50, pad = 4;
+      const pts = [[0, 1], [0.5, 1], [1, 5], [5, 5], [10, 1], [16, 1]];
+      const x = mi => pad + (mi / 16) * (W - 2 * pad);
+      const y = sc => (H - pad) - ((sc - 1) / 4) * (H - 2 * pad);
+      const path = pts.map((p, i) => (i ? 'L' : 'M') + x(p[0]).toFixed(1) + ' ' + y(p[1]).toFixed(1)).join(' ');
+      const area = path + ` L${x(16)} ${H - pad} L${x(0)} ${H - pad} Z`;
+      el.innerHTML = `<svg viewBox="0 0 ${W} ${H + 2}" preserveAspectRatio="none">
+    <path d="${area}" fill="var(--d-s)" fill-opacity="0.16"/>
+    <path d="${path}" fill="none" stroke="var(--d-s)" stroke-width="2.5" stroke-linejoin="round"/>
+    <circle cx="${x(2.8)}" cy="${y(5)}" r="3.5" fill="var(--d-s)"/>
+  </svg>
+  <div class="lab"><span>0 mi</span><span>ideal band</span><span>16+ mi</span></div>
+  <div class="zones"><span style="background:#c5402f;flex:.6">too close</span><span style="background:#1f8f4e;flex:2.5">ideal (≈1–5 mi)</span><span style="background:#c5402f;flex:1.4">too far</span></div>`;
     })();
 
     // --- domain weight bars (step 3) ---
